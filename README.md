@@ -1,0 +1,2 @@
+# README
+An iOS app for Tsquare - Georgia Tech's portal for viewing class grades, resources, submit HW etc. Currently I am buildng the app for my own personal use; therefore, there is no log-in screen.
