@@ -36,6 +36,7 @@ func networkRequest(request: URLRequest, handler: @escaping(_ data: Data) -> Voi
         }
         
         handler(data)
+        
     }
     
     task.resume()

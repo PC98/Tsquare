@@ -1,6 +1,5 @@
 //
 //  CoreDataSingleton.swift
-//  PPM
 //
 //  Created by Prabhav Chawla on 7/7/17.
 //  Copyright © 2017 Prabhav Chawla. All rights reserved.

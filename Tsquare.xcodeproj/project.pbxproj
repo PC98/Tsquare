@@ -7,12 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F2419C61F4DEEE2007399EF /* Tsquare.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F2419C41F4DEEE2007399EF /* Tsquare.xcdatamodeld */; };
+		4F2419C81F4DF810007399EF /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2419C71F4DF810007399EF /* Score.swift */; };
+		4F5091EE1F4E1E20005B89F0 /* Gradebook+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5091EA1F4E1E20005B89F0 /* Gradebook+CoreDataClass.swift */; };
+		4F5091EF1F4E1E20005B89F0 /* Gradebook+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5091EB1F4E1E20005B89F0 /* Gradebook+CoreDataProperties.swift */; };
+		4F5091F01F4E1E20005B89F0 /* Class+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5091EC1F4E1E20005B89F0 /* Class+CoreDataClass.swift */; };
+		4F5091F11F4E1E20005B89F0 /* Class+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5091ED1F4E1E20005B89F0 /* Class+CoreDataProperties.swift */; };
 		4FB3CE001F4CB2060036D33A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3CDFF1F4CB2060036D33A /* AppDelegate.swift */; };
 		4FB3CE051F4CB2060036D33A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FB3CE031F4CB2060036D33A /* Main.storyboard */; };
 		4FB3CE071F4CB2060036D33A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB3CE061F4CB2060036D33A /* Assets.xcassets */; };
 		4FB3CE0A1F4CB2060036D33A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FB3CE081F4CB2060036D33A /* LaunchScreen.storyboard */; };
 		4FB3CE161F4CB3570036D33A /* ClassViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3CE151F4CB3570036D33A /* ClassViewCell.swift */; };
-		4FB3CE181F4CB3640036D33A /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3CE171F4CB3640036D33A /* Class.swift */; };
 		4FB3CE1A1F4CB3720036D33A /* CoreDataSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3CE191F4CB3720036D33A /* CoreDataSingleton.swift */; };
 		4FB3CE1C1F4CB3780036D33A /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3CE1B1F4CB3780036D33A /* NetworkRequest.swift */; };
 		4FB3CE1E1F4CB37D0036D33A /* PortalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3CE1D1F4CB37D0036D33A /* PortalViewController.swift */; };
@@ -20,6 +25,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F2419C51F4DEEE2007399EF /* Tsquare.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tsquare.xcdatamodel; sourceTree = "<group>"; };
+		4F2419C71F4DF810007399EF /* Score.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
+		4F5091EA1F4E1E20005B89F0 /* Gradebook+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Gradebook+CoreDataClass.swift"; sourceTree = "<group>"; };
+		4F5091EB1F4E1E20005B89F0 /* Gradebook+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Gradebook+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4F5091EC1F4E1E20005B89F0 /* Class+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataClass.swift"; sourceTree = "<group>"; };
+		4F5091ED1F4E1E20005B89F0 /* Class+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4FB3CDFC1F4CB2060036D33A /* Tsquare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tsquare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB3CDFF1F4CB2060036D33A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4FB3CE041F4CB2060036D33A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -27,7 +38,6 @@
 		4FB3CE091F4CB2060036D33A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4FB3CE0B1F4CB2060036D33A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4FB3CE151F4CB3570036D33A /* ClassViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClassViewCell.swift; sourceTree = "<group>"; };
-		4FB3CE171F4CB3640036D33A /* Class.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Class.swift; sourceTree = "<group>"; };
 		4FB3CE191F4CB3720036D33A /* CoreDataSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataSingleton.swift; sourceTree = "<group>"; };
 		4FB3CE1B1F4CB3780036D33A /* NetworkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		4FB3CE1D1F4CB37D0036D33A /* PortalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortalViewController.swift; sourceTree = "<group>"; };
@@ -81,9 +91,14 @@
 		4FB3CE111F4CB3290036D33A /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4F5091EA1F4E1E20005B89F0 /* Gradebook+CoreDataClass.swift */,
+				4F5091EB1F4E1E20005B89F0 /* Gradebook+CoreDataProperties.swift */,
+				4F5091EC1F4E1E20005B89F0 /* Class+CoreDataClass.swift */,
+				4F5091ED1F4E1E20005B89F0 /* Class+CoreDataProperties.swift */,
 				4FB3CE1B1F4CB3780036D33A /* NetworkRequest.swift */,
 				4FB3CE191F4CB3720036D33A /* CoreDataSingleton.swift */,
-				4FB3CE171F4CB3640036D33A /* Class.swift */,
+				4F2419C41F4DEEE2007399EF /* Tsquare.xcdatamodeld */,
+				4F2419C71F4DF810007399EF /* Score.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -256,12 +271,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FB3CE181F4CB3640036D33A /* Class.swift in Sources */,
+				4F2419C81F4DF810007399EF /* Score.swift in Sources */,
 				4FB3CE1E1F4CB37D0036D33A /* PortalViewController.swift in Sources */,
+				4F5091EE1F4E1E20005B89F0 /* Gradebook+CoreDataClass.swift in Sources */,
+				4F5091F11F4E1E20005B89F0 /* Class+CoreDataProperties.swift in Sources */,
 				4FB3CE1A1F4CB3720036D33A /* CoreDataSingleton.swift in Sources */,
 				4FB3CE161F4CB3570036D33A /* ClassViewCell.swift in Sources */,
+				4F5091EF1F4E1E20005B89F0 /* Gradebook+CoreDataProperties.swift in Sources */,
 				4FB3CE1C1F4CB3780036D33A /* NetworkRequest.swift in Sources */,
 				4FB3CE001F4CB2060036D33A /* AppDelegate.swift in Sources */,
+				4F5091F01F4E1E20005B89F0 /* Class+CoreDataClass.swift in Sources */,
+				4F2419C61F4DEEE2007399EF /* Tsquare.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,6 +452,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		4F2419C41F4DEEE2007399EF /* Tsquare.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4F2419C51F4DEEE2007399EF /* Tsquare.xcdatamodel */,
+			);
+			currentVersion = 4F2419C51F4DEEE2007399EF /* Tsquare.xcdatamodel */;
+			path = Tsquare.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 4FB3CDF41F4CB2060036D33A /* Project object */;
 }

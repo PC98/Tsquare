@@ -20,10 +20,6 @@ class PortalViewController: UIViewController, UICollectionViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        activityIndicator.startAnimating()
-        activityIndicator.isHidden = false
-        
-        collectionView.isHidden = true
         collectionView.dataSource = self
         
         let space: CGFloat = 20.0
@@ -33,7 +29,26 @@ class PortalViewController: UIViewController, UICollectionViewDataSource {
         flowLayout.minimumLineSpacing = space // space between rows or columns
         flowLayout.itemSize = CGSize(width: dimension, height: dimension * 2 / 3) // governs cell size
         
-        self.loginGetId()
+        if UserDefaults.standard.bool(forKey: "dataDownloaded") {
+            self.changeUI(isLoading: false)
+            self.populateClassArr()
+        } else {
+            self.changeUI(isLoading: true)
+            self.loginGetId()
+        }
+    }
+    
+    private func populateClassArr() {
+        do {
+            classArr = try CoreDataSingleton.shared.context.fetch(Class.fetchRequest())
+        } catch {
+            fatalError("Can't fetch!")
+        }
+    }
+    
+    private func changeUI(isLoading: Bool) {
+        activityIndicator.isHidden = !isLoading
+        collectionView.isHidden = isLoading
     }
     
     private func loginGetId() {
@@ -65,7 +80,18 @@ class PortalViewController: UIViewController, UICollectionViewDataSource {
                 for element in try doc.select("#siteLinkList > *") {
                     if try element.className().isEmpty {
                         let link = try element.select("a").first()!
-                        self.classArr.append(Class(name: try link.text(), getURL: try link.attr("href")))
+                        
+                        let name = try link.text()
+                        let siteURL = URL(string: try link.attr("href"))!
+                        
+                        CoreDataSingleton.shared.backgroundContext.performAndWait {
+                            self.classArr.append(Class(name: name, siteURL: siteURL, context: CoreDataSingleton.shared.backgroundContext))
+                            do {
+                                try CoreDataSingleton.shared.backgroundContext.save()
+                            } catch {
+                                fatalError("Error while saving backgroundContext: \(error)")
+                            }
+                        }
                     }
                 }
                 DispatchQueue.main.async {
@@ -73,7 +99,10 @@ class PortalViewController: UIViewController, UICollectionViewDataSource {
                     self.collectionView.isHidden = false
                     self.collectionView.reloadData()
                 }
-
+                
+                UserDefaults.standard.set(true, forKey: "dataDownloaded")
+                CoreDataSingleton.shared.saveContext()
+                
             } catch {
                 print("error")
             }
