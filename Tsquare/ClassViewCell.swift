@@ -10,4 +10,5 @@ import UIKit
 
 class ClassViewCell: UICollectionViewCell {
     @IBOutlet weak var className: UILabel!
+    @IBOutlet weak var backgroundCardView: UIView!
 }
