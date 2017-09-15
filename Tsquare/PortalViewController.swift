@@ -41,7 +41,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
             self.populateClassArr()
         } else {
             self.changeUI(isLoading: true)
-            self.loginGetId()
+            self.getTsquare()
         }
     }
     
@@ -58,74 +58,75 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
         collectionView.isHidden = isLoading
     }
     
-    private func loginGetId() {
-        networkRequest(request: URLRequest(url: URL(string: "https://login.gatech.edu/cas/login")!)) { data in
-            let html_string = String(data: data, encoding: .utf8)
-            
-            if let lt_id = html_string?.components(separatedBy: "name=\"lt\" value=\"")[1].components(separatedBy: "\" />")[0] {
-                self.loginPostCredentials(lt_id)
-            }
-        }
-    }
-    
-    private func loginPostCredentials(_ id: String) {
-        let request = NSMutableURLRequest(url: URL(string: "https://login.gatech.edu/cas/login")!)
-        request.httpMethod = "POST"
-        request.httpBody = "username=pchawla8&password=GTCSSUMMER@2017&lt=\(id)&execution=e1s1&_eventId=submit&submit=LOGIN".data(using: .utf8)
-        
-        networkRequest(request: request as URLRequest) { _ in
-            self.getTsquare()
-        }
-    }
-    
     private func getTsquare() {
         networkRequest(request: URLRequest(url: URL(string: "https://login.gatech.edu/cas/login?service=https%3A%2F%2Ft-square.gatech.edu%2Fsakai-login-tool%2Fcontainer")!)) { data in
             
             do {
-                DispatchQueue.main.sync {
-                    
-                    let fr: NSFetchRequest<Class> = Class.fetchRequest()
-                    
-                    if let classes = try? CoreDataSingleton.shared.context.fetch(fr) {
-                        for item in classes {
-                            CoreDataSingleton.shared.context.delete(item)
-                        }
-
-                        self.classArr = [Class]()
-                    }
-                }
-                
-                
                 let html = String(data: data, encoding: .utf8)
                 let doc: Document = try SwiftSoup.parse(html!)
-                for element in try doc.select("#siteLinkList > *") {
-                    if try element.className().isEmpty {
-                        let link = try element.select("a").first()!
+                
+                if try doc.select("title").first()?.text() == "GT | GT Login" {
+                    DispatchQueue.main.sync {
+                        let alert = UIAlertController()
                         
-                        let name = try link.text()
-                        let siteURL = URL(string: try link.attr("href"))!
+                        alert.title = "Session Expired"
+                        alert.message = "Attempt to refresh data has failed since your login session has expired. Old data will be presented. You could try logging out and logging back in."
                         
-                        CoreDataSingleton.shared.backgroundContext.performAndWait {
-                            self.classArr.append(Class(name: name, siteURL: siteURL, context: CoreDataSingleton.shared.backgroundContext))
-                            do {
-                                try CoreDataSingleton.shared.backgroundContext.save()
-                            } catch {
-                                fatalError("Error while saving backgroundContext: \(error)")
+                        let okAction = UIAlertAction(title: "OK", style: .default)
+                        alert.addAction(okAction)
+                        
+                        if let popoverController = alert.popoverPresentationController {
+                            popoverController.sourceView = self.view
+                            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                            popoverController.permittedArrowDirections = []
+                        }
+                        
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                } else {
+                    
+                    DispatchQueue.main.sync {
+                        
+                        let fr: NSFetchRequest<Class> = Class.fetchRequest()
+                        
+                        if let classes = try? CoreDataSingleton.shared.context.fetch(fr) {
+                            for item in classes {
+                                CoreDataSingleton.shared.context.delete(item)
+                            }
+                            
+                            self.classArr = [Class]()
+                        }
+                    }
+                    
+                    for element in try doc.select("#siteLinkList > *") {
+                        if try element.className().isEmpty {
+                            let link = try element.select("a").first()!
+                            
+                            let name = try link.text()
+                            let siteURL = URL(string: try link.attr("href"))!
+                            
+                            CoreDataSingleton.shared.backgroundContext.performAndWait {
+                                self.classArr.append(Class(name: name, siteURL: siteURL, context: CoreDataSingleton.shared.backgroundContext))
+                                do {
+                                    try CoreDataSingleton.shared.backgroundContext.save()
+                                } catch {
+                                    fatalError("Error while saving backgroundContext: \(error)")
+                                }
                             }
                         }
                     }
+                    
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                        self.changeUI(isLoading: false)
+                    }
+                    
+                    UserDefaults.standard.set(true, forKey: "dataDownloaded")
+                    UserDefaults.standard.set(Date(), forKey: "lastRefreshDate")
+                    
+                    CoreDataSingleton.shared.saveContext()
                 }
-                
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                    self.changeUI(isLoading: false)
-                }
-                
-                UserDefaults.standard.set(true, forKey: "dataDownloaded")
-                UserDefaults.standard.set(Date(), forKey: "lastRefreshDate")
-                CoreDataSingleton.shared.saveContext()
-                
-            } catch {
+            }  catch {
                 print("error")
             }
             
@@ -154,20 +155,91 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath:IndexPath) {
         
         let gradebookController = storyboard!.instantiateViewController(withIdentifier: "GradebookViewController") as! GradebookViewController
+        let classObject = classArr[indexPath.row]
         
+        gradebookController.navigationItem.title = "Gradebook \(classObject.name!)"
         
-        gradebookController.navigationItem.title = "Gradebook \((collectionView.cellForItem(at: indexPath) as! ClassViewCell).className.text!)"
-        
-        navigationController!.pushViewController(gradebookController, animated: true)
+        networkRequest(request: URLRequest(url: classObject.siteURL as! URL)) { data in
+            do {
+                
+                let html = String(data: data, encoding: .utf8)
+                let doc: Document = try SwiftSoup.parse(html!)
+                
+                print(doc)
+                
+                if let element = try doc.select("a.icon-sakai-gradebook-tool").first() {
+                    
+                    CoreDataSingleton.shared.backgroundContext.perform {
+                        
+                        let gradebookObj = Gradebook(context: CoreDataSingleton.shared.backgroundContext)
+                        print(try! element.attr("href"))
+                        gradebookObj.siteURL = URL(string: try! element.attr("href"))! as NSObject
+                        gradebookObj.classObject = classObject
+                        
+                        classObject.gradebook = gradebookObj
+                        
+                        gradebookController.gradebookObj = gradebookObj
+                        
+                        DispatchQueue.main.async {
+                            self.navigationController!.pushViewController(gradebookController, animated: true)
+                        }
+                        
+                        do {
+                            try CoreDataSingleton.shared.backgroundContext.save()
+                        } catch {
+                            fatalError("Error while saving backgroundContext: \(error)")
+                        }
+                    }
+                }
+                
+            } catch {
+                print("error")
+            }
+        }
         
         collectionView.deselectItem(at: indexPath, animated: true)
+    }
+    
+    @IBAction func logout(_ sender: Any) {
+        let alert = UIAlertController()
+        
+        alert.title = "Logout Confirmation"
+        alert.message = "Are you sure you want to logout? All data will be deleted."
+        
+        let logoutAction = UIAlertAction(title: "Logout", style: .destructive) { (alert: UIAlertAction!) -> Void in
+            
+            UserDefaults.standard.set(false, forKey: "authenticated")
+            UserDefaults.standard.set(false, forKey: "dataDownloaded")
+            UserDefaults.standard.removeObject(forKey: "cookies")
+            
+            if let cookies = HTTPCookieStorage.shared.cookies {
+                for cookie in cookies {
+                    HTTPCookieStorage.shared.deleteCookie(cookie)
+                }
+            }
+            
+            self.navigationController?.popViewController(animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        
+        alert.addAction(logoutAction)
+        alert.addAction(cancelAction)
+        
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func refresh(_ sender: Any) {
         let str = String(describing: (UserDefaults.standard.object(forKey: "lastRefreshDate") as! Date).customPlaygroundQuickLook)
         let index = str.index(str.startIndex, offsetBy: 6)
         let endIndex = str.index(str.endIndex, offsetBy:-2)
-
+        
         let alert = UIAlertController()
         
         alert.title = "Refresh Confirmation"
@@ -175,14 +247,14 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         let refreshAction = UIAlertAction(title: "Refresh", style: .destructive) { (alert: UIAlertAction!) -> Void in
             self.changeUI(isLoading: true)
-            self.loginGetId()
+            self.getTsquare()
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .default)
         
         alert.addAction(refreshAction)
         alert.addAction(cancelAction)
-
+        
         if let popoverController = alert.popoverPresentationController {
             popoverController.sourceView = self.view
             popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)

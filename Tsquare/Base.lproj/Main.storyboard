@@ -13,23 +13,58 @@
         <!--Navigation Controller-->
         <scene sceneID="PLr-1W-Bha">
             <objects>
-                <navigationController id="gqI-fp-YLS" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationController" id="gqI-fp-YLS" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="VDe-yw-Qc3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="W8G-1w-MtI"/>
+                        <segue destination="j24-Et-z2n" kind="relationship" relationship="rootViewController" id="TBs-QT-fSG"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2fm-rt-rlk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-706" y="134"/>
+            <point key="canvasLocation" x="-1644" y="136"/>
+        </scene>
+        <!--Login View Controller-->
+        <scene sceneID="JAN-2W-dPc">
+            <objects>
+                <viewController id="j24-Et-z2n" customClass="LoginViewController" customModule="Tsquare" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dBE-Hb-Y5u"/>
+                        <viewControllerLayoutGuide type="bottom" id="mJ7-S8-1xZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="u8O-Lh-pfc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8nB-as-6GJ">
+                                <rect key="frame" x="16" y="64" width="343" height="603"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="8nB-as-6GJ" secondAttribute="trailing" id="25I-nE-jjB"/>
+                            <constraint firstItem="8nB-as-6GJ" firstAttribute="leading" secondItem="u8O-Lh-pfc" secondAttribute="leadingMargin" id="FXH-dR-dfp"/>
+                            <constraint firstItem="mJ7-S8-1xZ" firstAttribute="top" secondItem="8nB-as-6GJ" secondAttribute="bottom" id="Pgh-91-N2R"/>
+                            <constraint firstItem="8nB-as-6GJ" firstAttribute="top" secondItem="dBE-Hb-Y5u" secondAttribute="bottom" id="U6f-t2-VlM"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Nc9-5a-BBp"/>
+                    <connections>
+                        <outlet property="webView" destination="8nB-as-6GJ" id="rpw-Qi-fCj"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="showPortalViewController" id="naj-Fs-JC3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Svg-AU-J8b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-735" y="134"/>
         </scene>
         <!--Classes-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="PortalViewController" customModule="Tsquare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PortalViewController" id="BYZ-38-t0r" customClass="PortalViewController" customModule="Tsquare" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -100,7 +135,12 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Classes" id="PHV-56-64E">
-                        <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="zfj-1A-QKo">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="kuk-MB-QDZ">
+                            <connections>
+                                <action selector="logout:" destination="BYZ-38-t0r" id="Ysm-EU-frk"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="zfj-1A-QKo">
                             <connections>
                                 <action selector="refresh:" destination="BYZ-38-t0r" id="uq4-S4-wiw"/>
                             </connections>

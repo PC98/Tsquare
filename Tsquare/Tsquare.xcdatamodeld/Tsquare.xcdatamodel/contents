@@ -6,7 +6,7 @@
         <relationship name="gradebook" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Gradebook" inverseName="classObject" inverseEntity="Gradebook" syncable="YES"/>
     </entity>
     <entity name="Gradebook" representedClassName="Gradebook" syncable="YES">
-        <attribute name="score" attributeType="Transformable" syncable="YES"/>
+        <attribute name="score" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="siteURL" attributeType="Transformable" syncable="YES"/>
         <relationship name="classObject" maxCount="1" deletionRule="Nullify" destinationEntity="Class" inverseName="gradebook" inverseEntity="Class" syncable="YES"/>
     </entity>

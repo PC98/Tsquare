@@ -9,5 +9,5 @@
 import UIKit
 
 class GradebookViewController: UITableViewController {
-    
+    var gradebookObj: Gradebook!
 }
