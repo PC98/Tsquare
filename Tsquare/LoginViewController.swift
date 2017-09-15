@@ -11,7 +11,7 @@ import UIKit
 class LoginViewController: UIViewController, UIWebViewDelegate {
     
     @IBOutlet weak var webView: UIWebView!
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -31,11 +31,9 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        if webView.request?.url?.absoluteString.range(of: "jsessionid") != nil {
-            if webView.stringByEvaluatingJavaScript(from: "document.getElementById(\"msg\").className") == "success" {
-                UserDefaults.standard.set(true, forKey: "authenticated")
-                self.performSegue(withIdentifier: "showPortalViewController", sender: self)
-            }
+        if webView.stringByEvaluatingJavaScript(from: "document.getElementById(\"msg\").className") == "success" {
+            UserDefaults.standard.set(true, forKey: "authenticated")
+            self.performSegue(withIdentifier: "showPortalViewController", sender: self)
         }
     }
 }
