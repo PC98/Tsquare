@@ -11,6 +11,7 @@ import UIKit
 class LoginViewController: UIViewController, UIWebViewDelegate {
     
     @IBOutlet weak var webView: UIWebView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -23,16 +24,23 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     }
     
     func setUp() {
-        webView.delegate = self
-        webView.isOpaque = true
-        webView.backgroundColor = UIColor.white
-        webView.loadRequest(URLRequest(url: URL(string: "https://login.gatech.edu/cas/login")!))
+        self.webView.delegate = self
+        self.webView.isOpaque = true
+        self.webView.backgroundColor = UIColor.white
+        self.webView.loadRequest(URLRequest(url: URL(string: "https://login.gatech.edu/cas/login")!))
     }
     
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
+        if webView.request?.url?.absoluteString == "https://login.gatech.edu/cas/login" {
+            self.activityIndicator.isHidden = true
+            self.webView.isHidden = false
+        }
+        
         if webView.stringByEvaluatingJavaScript(from: "document.getElementById(\"msg\").className") == "success" {
             UserDefaults.standard.set(true, forKey: "authenticated")
+            self.webView.isHidden = true
+            self.activityIndicator.isHidden = false
             self.performSegue(withIdentifier: "showPortalViewController", sender: self)
         }
     }

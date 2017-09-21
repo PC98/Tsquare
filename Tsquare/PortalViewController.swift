@@ -65,14 +65,17 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                 let html = String(data: data, encoding: .utf8)
                 let doc: Document = try SwiftSoup.parse(html!)
                 
-                if try doc.select("title").first()?.text() == "GT | GT Login" {
+                if try doc.select("title").first()?.text() == "GT | GT Login" && UserDefaults.standard.bool(forKey: "dataDownloaded") {
                     DispatchQueue.main.sync {
                         let alert = UIAlertController()
                         
                         alert.title = "Session Expired"
                         alert.message = "Attempt to refresh data has failed since your login session has expired. Old data will be presented. You could try logging out and logging back in."
                         
-                        let okAction = UIAlertAction(title: "OK", style: .default)
+                        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            self.changeUI(isLoading: false)
+                        }
+                        
                         alert.addAction(okAction)
                         
                         if let popoverController = alert.popoverPresentationController {
@@ -164,8 +167,6 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                 
                 let html = String(data: data, encoding: .utf8)
                 let doc: Document = try SwiftSoup.parse(html!)
-                
-                print(doc)
                 
                 if let element = try doc.select("a.icon-sakai-gradebook-tool").first() {
                     
