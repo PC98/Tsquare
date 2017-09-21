@@ -8,14 +8,6 @@
 
 import Foundation
 
-#if !os(Linux)
-	extension NSTextCheckingResult {
-		func range(at idx: Int) -> NSRange {
-			return rangeAt(idx)
-		}
-	}
-#endif
-
 public struct Pattern {
     public static let CASE_INSENSITIVE: Int = 0x02
     let pattern: String

@@ -38,28 +38,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8nB-as-6GJ">
-                                <rect key="frame" x="16" y="64" width="343" height="603"/>
+                            <webView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8nB-as-6GJ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </webView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="hMW-2D-Zbj">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                                <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="8nB-as-6GJ" secondAttribute="trailing" id="25I-nE-jjB"/>
-                            <constraint firstItem="8nB-as-6GJ" firstAttribute="leading" secondItem="u8O-Lh-pfc" secondAttribute="leadingMargin" id="FXH-dR-dfp"/>
+                            <constraint firstItem="hMW-2D-Zbj" firstAttribute="centerY" secondItem="u8O-Lh-pfc" secondAttribute="centerY" id="BqW-oj-Kv0"/>
+                            <constraint firstAttribute="leading" secondItem="8nB-as-6GJ" secondAttribute="leading" id="FXH-dR-dfp"/>
                             <constraint firstItem="mJ7-S8-1xZ" firstAttribute="top" secondItem="8nB-as-6GJ" secondAttribute="bottom" id="Pgh-91-N2R"/>
-                            <constraint firstItem="8nB-as-6GJ" firstAttribute="top" secondItem="dBE-Hb-Y5u" secondAttribute="bottom" id="U6f-t2-VlM"/>
+                            <constraint firstAttribute="trailing" secondItem="8nB-as-6GJ" secondAttribute="trailing" id="REL-ph-hwZ"/>
+                            <constraint firstItem="hMW-2D-Zbj" firstAttribute="centerX" secondItem="u8O-Lh-pfc" secondAttribute="centerX" id="day-1H-Xqc"/>
+                            <constraint firstItem="8nB-as-6GJ" firstAttribute="top" secondItem="u8O-Lh-pfc" secondAttribute="top" id="iJi-E0-km1"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Nc9-5a-BBp"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="hMW-2D-Zbj" id="Qqc-54-pus"/>
                         <outlet property="webView" destination="8nB-as-6GJ" id="rpw-Qi-fCj"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="showPortalViewController" id="naj-Fs-JC3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Svg-AU-J8b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-735" y="134"/>
+            <point key="canvasLocation" x="-735.20000000000005" y="133.5832083958021"/>
         </scene>
         <!--Classes-->
         <scene sceneID="tne-QT-ifu">

@@ -31,7 +31,7 @@ extension String {
         let start = value.index(value.startIndex, offsetBy: offset)
         let end = value.index(value.startIndex, offsetBy: count+offset)
         let range = start..<end
-        return value.substring(with: range)
+        return String(value[range])
     }
 
 	func isEmptyOrWhitespace() -> Bool {
@@ -53,7 +53,7 @@ extension String {
         if(maxIndex >= 0) {
             for index in offset...maxIndex {
                 let rangeSubstring = self.characters.index(self.startIndex, offsetBy: index)..<self.characters.index(self.startIndex, offsetBy: index + substring.characters.count)
-                if self.substring(with: rangeSubstring) == substring {
+                if String(self[rangeSubstring]) == substring {
                     return index
                 }
             }
