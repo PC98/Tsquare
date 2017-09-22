@@ -21,8 +21,6 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.automaticallyAdjustsScrollViewInsets = false
-        
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -59,13 +57,14 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     private func getTsquare() {
-        networkRequest(request: URLRequest(url: URL(string: "https://login.gatech.edu/cas/login?service=https%3A%2F%2Ft-square.gatech.edu%2Fsakai-login-tool%2Fcontainer")!)) { data in
+        networkRequest(request: NSMutableURLRequest(url: URL(string: "https://t-square.gatech.edu/portal")!)) { data in
             
             do {
                 let html = String(data: data, encoding: .utf8)
+                print(html ?? "nil")
                 let doc: Document = try SwiftSoup.parse(html!)
                 
-                if try doc.select("title").first()?.text() == "GT | GT Login" && UserDefaults.standard.bool(forKey: "dataDownloaded") {
+                if try doc.select("title").first()?.text() == "T-Square : Gateway : Message of the Day" && UserDefaults.standard.bool(forKey: "dataDownloaded") {
                     DispatchQueue.main.sync {
                         let alert = UIAlertController()
                         
@@ -74,6 +73,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                         
                         let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
                             self.changeUI(isLoading: false)
+                            self.activityIndicator.startAnimating()
                         }
                         
                         alert.addAction(okAction)
@@ -84,6 +84,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                             popoverController.permittedArrowDirections = []
                         }
                         
+                        self.activityIndicator.stopAnimating()
                         self.present(alert, animated: true, completion: nil)
                     }
                 } else {
@@ -101,7 +102,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                         }
                     }
                     
-                    for element in try doc.select("#siteLinkList > *") {
+                    for element in try doc.select("#pda-portlet-site-menu > *") {
                         if try element.className().isEmpty {
                             let link = try element.select("a").first()!
                             
@@ -162,7 +163,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         gradebookController.navigationItem.title = "Gradebook \(classObject.name!)"
         
-        networkRequest(request: URLRequest(url: classObject.siteURL as! URL)) { data in
+        networkRequest(request: NSMutableURLRequest(url: classObject.siteURL as! URL)) { data in
             do {
                 
                 let html = String(data: data, encoding: .utf8)
@@ -211,15 +212,10 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
             
             UserDefaults.standard.set(false, forKey: "authenticated")
             UserDefaults.standard.set(false, forKey: "dataDownloaded")
-            UserDefaults.standard.removeObject(forKey: "cookies")
+        
+            (UIApplication.shared.delegate as! AppDelegate).deleteCookies()
             
-            if let cookies = HTTPCookieStorage.shared.cookies {
-                for cookie in cookies {
-                    HTTPCookieStorage.shared.deleteCookie(cookie)
-                }
-            }
-            
-            self.navigationController?.popViewController(animated: true)
+            self.dismiss(animated: true)
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .default)

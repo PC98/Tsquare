@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tsquare/PortalViewController.swift"
+            timestampString = "527736217.746453"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "getTsquare()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tsquare/PortalViewController.swift"
+            timestampString = "527736217.746537"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "getTsquare()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Foundation.Data) -&gt; () in Tsquare.PortalViewController.(getTsquare in _21CD58A558679513BD3417B4D9E2466D)() -&gt; ()"
+                  moduleName = "Tsquare"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/PC/Desktop%20-%20actual/Online%20Courses/My_ios/Tsquare/Tsquare/PortalViewController.swift"
+                  timestampString = "527736217.86384"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "112">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "implicit closure #1 : @autoclosure () throws -&gt; Swift.String in closure #1 (Foundation.Data) -&gt; () in Tsquare.PortalViewController.(getTsquare in _21CD58A558679513BD3417B4D9E2466D)() -&gt; ()"
+                  moduleName = "Tsquare"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/PC/Desktop%20-%20actual/Online%20Courses/My_ios/Tsquare/Tsquare/PortalViewController.swift"
+                  timestampString = "527736217.866076"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "12">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tsquare/PortalViewController.swift"
+            timestampString = "527736217.746593"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
+            landmarkName = "getTsquare()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Foundation.Data) -&gt; () in Tsquare.PortalViewController.(getTsquare in _21CD58A558679513BD3417B4D9E2466D)() -&gt; ()"
+                  moduleName = "Tsquare"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/PC/Desktop%20-%20actual/Online%20Courses/My_ios/Tsquare/Tsquare/PortalViewController.swift"
+                  timestampString = "527736217.8716"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "123"
+                  endingLineNumber = "123"
+                  offsetFromSymbolStart = "3420">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #4 () -&gt; () in closure #1 (Foundation.Data) -&gt; () in Tsquare.PortalViewController.(getTsquare in _21CD58A558679513BD3417B4D9E2466D)() -&gt; ()"
+                  moduleName = "Tsquare"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/PC/Desktop%20-%20actual/Online%20Courses/My_ios/Tsquare/Tsquare/PortalViewController.swift"
+                  timestampString = "527736217.874268"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "124"
+                  endingLineNumber = "124"
+                  offsetFromSymbolStart = "28">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tsquare/PortalViewController.swift"
+            timestampString = "527736217.746642"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "getTsquare()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

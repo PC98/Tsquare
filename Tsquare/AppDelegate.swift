@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import WebKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -63,14 +64,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }()
     
     func saveCookies() {
-        guard let cookies = HTTPCookieStorage.shared.cookies else {
-            return
+        WKWebsiteDataStore.default().httpCookieStore.getAllCookies() { (cookies) in
+            let array = cookies.flatMap { (cookie) -> [HTTPCookiePropertyKey: Any]? in
+                cookie.properties
+            }
+            UserDefaults.standard.set(array, forKey: "cookies")
+            UserDefaults.standard.synchronize()
         }
-        let array = cookies.flatMap { (cookie) -> [HTTPCookiePropertyKey: Any]? in
-            cookie.properties
-        }
-        UserDefaults.standard.set(array, forKey: "cookies")
-        UserDefaults.standard.synchronize()
     }
     
     func loadCookies() {
@@ -81,7 +81,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             guard let cookie = HTTPCookie.init(properties: cookie) else {
                 return
             }
-            HTTPCookieStorage.shared.setCookie(cookie)
+            WKWebsiteDataStore.default().httpCookieStore.setCookie(cookie)
+        }
+    }
+    
+    func deleteCookies() {
+        UserDefaults.standard.removeObject(forKey: "cookies")
+        WKWebsiteDataStore.default().httpCookieStore.getAllCookies() { (cookies) in
+            for cookie in cookies {
+                WKWebsiteDataStore.default().httpCookieStore.delete(cookie)
+            }
         }
     }
 }

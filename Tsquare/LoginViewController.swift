@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import WebKit
 
-class LoginViewController: UIViewController, UIWebViewDelegate {
+class LoginViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     
-    @IBOutlet weak var webView: UIWebView!
+    var webView: WKWebView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidAppear(_ animated: Bool) {
@@ -19,29 +20,38 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
         if !UserDefaults.standard.bool(forKey: "authenticated") {
             self.setUp()
         } else {
-            self.performSegue(withIdentifier: "showPortalViewController", sender: self)
+            let viewController = storyboard?.instantiateViewController(withIdentifier: "portalNavigationViewController") as! UINavigationController
+            self.present(viewController, animated: true)
         }
     }
     
     func setUp() {
-        self.webView.delegate = self
-        self.webView.isOpaque = true
-        self.webView.backgroundColor = UIColor.white
-        self.webView.loadRequest(URLRequest(url: URL(string: "https://login.gatech.edu/cas/login")!))
+        let webConfiguration = WKWebViewConfiguration()
+        let frame = CGRect(x: 0, y: 20, width: self.view.frame.width, height: self.view.frame.height)
+        self.webView = WKWebView(frame: frame, configuration: webConfiguration)
+        self.webView.uiDelegate = self
+        self.webView.navigationDelegate = self
+        self.webView.isHidden = true
+        self.view.addSubview(self.webView)
+        self.webView.load(URLRequest(url: URL(string: "https://login.gatech.edu/cas/login?service=https%3A%2F%2Ft-square.gatech.edu%2Fsakai-login-tool%2Fcontainer")!))
     }
     
     
-    func webViewDidFinishLoad(_ webView: UIWebView) {
-        if webView.request?.url?.absoluteString == "https://login.gatech.edu/cas/login" {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        if webView.url?.absoluteString == "https://login.gatech.edu/cas/login?service=https%3A%2F%2Ft-square.gatech.edu%2Fsakai-login-tool%2Fcontainer" {
             self.activityIndicator.isHidden = true
             self.webView.isHidden = false
         }
         
-        if webView.stringByEvaluatingJavaScript(from: "document.getElementById(\"msg\").className") == "success" {
-            UserDefaults.standard.set(true, forKey: "authenticated")
-            self.webView.isHidden = true
-            self.activityIndicator.isHidden = false
-            self.performSegue(withIdentifier: "showPortalViewController", sender: self)
+        webView.evaluateJavaScript("document.title") { (result, error) in
+            print(result ?? "nil")
+            if result as? String == "T-Square" {
+                UserDefaults.standard.set(true, forKey: "authenticated")
+                self.webView.isHidden = true
+                self.activityIndicator.isHidden = false
+                let viewController = self.storyboard?.instantiateViewController(withIdentifier: "portalNavigationViewController") as! UINavigationController
+                self.present(viewController, animated: true)
+            }
         }
     }
 }
