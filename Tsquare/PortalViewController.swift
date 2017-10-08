@@ -21,8 +21,6 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.automaticallyAdjustsScrollViewInsets = false
-        
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -59,7 +57,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     private func getTsquare() {
-        networkRequest(request: URLRequest(url: URL(string: "https://login.gatech.edu/cas/login?service=https%3A%2F%2Ft-square.gatech.edu%2Fsakai-login-tool%2Fcontainer")!)) { data in
+        networkRequest(request: URLRequest(url: URL(string: "https://login.gatech.edu/cas/login?service=https%3A%2F%2Ft-square.gatech.edu%2Fsakai-login-tool%2Fcontainer")!)) { (data, response) in
             
             do {
                 let html = String(data: data, encoding: .utf8)
@@ -72,7 +70,10 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                         alert.title = "Session Expired"
                         alert.message = "Attempt to refresh data has failed since your login session has expired. Old data will be presented. You could try logging out and logging back in."
                         
+                        self.activityIndicator.stopAnimating()
+                        
                         let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            self.activityIndicator.startAnimating()
                             self.changeUI(isLoading: false)
                         }
                         
@@ -96,7 +97,6 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                             for item in classes {
                                 CoreDataSingleton.shared.context.delete(item)
                             }
-                            
                             self.classArr = [Class]()
                         }
                     }
@@ -109,7 +109,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                             let siteURL = URL(string: try link.attr("href"))!
                             
                             CoreDataSingleton.shared.backgroundContext.performAndWait {
-                                self.classArr.append(Class(name: name, siteURL: siteURL, context: CoreDataSingleton.shared.backgroundContext))
+                                let _ = Class(name: name, siteURL: siteURL, context: CoreDataSingleton.shared.backgroundContext)
                                 do {
                                     try CoreDataSingleton.shared.backgroundContext.save()
                                 } catch {
@@ -119,20 +119,20 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                         }
                     }
                     
+                    CoreDataSingleton.shared.saveContext()
+                    
                     DispatchQueue.main.async {
+                        self.populateClassArr()
                         self.collectionView.reloadData()
                         self.changeUI(isLoading: false)
                     }
                     
                     UserDefaults.standard.set(true, forKey: "dataDownloaded")
                     UserDefaults.standard.set(Date(), forKey: "lastRefreshDate")
-                    
-                    CoreDataSingleton.shared.saveContext()
                 }
             }  catch {
                 print("error")
             }
-            
         }
     }
     
@@ -162,7 +162,13 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         gradebookController.navigationItem.title = "Gradebook \(classObject.name!)"
         
-        networkRequest(request: URLRequest(url: classObject.siteURL as! URL)) { data in
+        if let gradebook = classObject.gradebook {
+            gradebookController.gradebookObj = gradebook
+            self.navigationController!.pushViewController(gradebookController, animated: true)
+            return
+        }
+        
+        networkRequest(request: URLRequest(url: classObject.siteURL as! URL)) { (data, response) in
             do {
                 
                 let html = String(data: data, encoding: .utf8)
@@ -170,27 +176,43 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                 
                 if let element = try doc.select("a.icon-sakai-gradebook-tool").first() {
                     
-                    CoreDataSingleton.shared.backgroundContext.perform {
+                    CoreDataSingleton.shared.context.perform {
+                        let gradebookObj = Gradebook(context: CoreDataSingleton.shared.context)
                         
-                        let gradebookObj = Gradebook(context: CoreDataSingleton.shared.backgroundContext)
-                        print(try! element.attr("href"))
-                        gradebookObj.siteURL = URL(string: try! element.attr("href"))! as NSObject
+                        var url: URL!
+                        if try! element.parent()?.className() == "selectedTool" {
+                            url = response.url!
+                        } else {
+                            url = URL(string: try! element.attr("href"))!
+                        }
+                        
+                        gradebookObj.siteURL = url as NSObject
                         gradebookObj.classObject = classObject
-                        
                         classObject.gradebook = gradebookObj
-                        
                         gradebookController.gradebookObj = gradebookObj
+                    
+                        CoreDataSingleton.shared.saveContext()
                         
                         DispatchQueue.main.async {
                             self.navigationController!.pushViewController(gradebookController, animated: true)
                         }
-                        
-                        do {
-                            try CoreDataSingleton.shared.backgroundContext.save()
-                        } catch {
-                            fatalError("Error while saving backgroundContext: \(error)")
-                        }
                     }
+                } else {
+                    let alert = UIAlertController()
+                    
+                    alert.title = "Gradebook Missing"
+                    alert.message = "This class doesn't have a Gradebook."
+                    
+                    let okAction = UIAlertAction(title: "OK", style: .default)
+                    alert.addAction(okAction)
+                    
+                    if let popoverController = alert.popoverPresentationController {
+                        popoverController.sourceView = self.view
+                        popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                        popoverController.permittedArrowDirections = []
+                    }
+                
+                    self.present(alert, animated: true, completion: nil)
                 }
                 
             } catch {
@@ -219,7 +241,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                 }
             }
             
-            self.navigationController?.popViewController(animated: true)
+            self.dismiss(animated: true)
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .default)

@@ -8,7 +8,7 @@
 
 import UIKit
 
-func networkRequest(request: URLRequest, handler: @escaping(_ data: Data) -> Void) {
+func networkRequest(request: URLRequest, handler: @escaping(_ data: Data, _ response: URLResponse) -> Void) {
     let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
         // if an error occurs, print it and re-enable the UI
         func displayError(_ error: String) {
@@ -35,7 +35,7 @@ func networkRequest(request: URLRequest, handler: @escaping(_ data: Data) -> Voi
             return
         }
         
-        handler(data)
+        handler(data, response!)
         
     }
     

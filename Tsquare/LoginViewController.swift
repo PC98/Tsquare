@@ -19,7 +19,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
         if !UserDefaults.standard.bool(forKey: "authenticated") {
             self.setUp()
         } else {
-            self.performSegue(withIdentifier: "showPortalViewController", sender: self)
+            self.performSegue(withIdentifier: "showNavigationController", sender: self)
         }
     }
     
@@ -41,7 +41,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
             UserDefaults.standard.set(true, forKey: "authenticated")
             self.webView.isHidden = true
             self.activityIndicator.isHidden = false
-            self.performSegue(withIdentifier: "showPortalViewController", sender: self)
+            self.performSegue(withIdentifier: "showNavigationController", sender: self)
         }
     }
 }
