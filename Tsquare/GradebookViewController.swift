@@ -15,7 +15,7 @@ class GradebookViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var gradebookObj: Gradebook!
-    var scoreArr = [Score]()
+    var scoresDict = [Int:[Score]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,14 +24,24 @@ class GradebookViewController: UIViewController, UITableViewDataSource {
         tableView.tableFooterView = UIView.init(frame: .zero)
         tableView.allowsSelection = false
         
-        if let scoreArr = gradebookObj.score as? [Score] {
+        if let scoresDict = gradebookObj.score as? [Int:[Score]] {
             self.changeUI(isLoading: false)
-            self.scoreArr = scoreArr
+            if scoresDict.count == 0 {
+                noDataUI()
+            } else {
+                self.scoresDict = scoresDict
+            }
             return
         }
         
         self.changeUI(isLoading: true)
         self.getIframeSrc()
+    }
+    
+    private func noDataUI() {
+        presentAlert(title: "No Data Found", message: "This class has no items in it's Gradebook.", presentingVC: self) {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     private func changeUI(isLoading: Bool) {
@@ -59,24 +69,46 @@ class GradebookViewController: UIViewController, UITableViewDataSource {
             do {
                 let html = String(data: data, encoding: .utf8)
                 let doc: Document = try SwiftSoup.parse(html!)
+
+                let tableRows: Elements = try! doc.select("table.listHier.wideTable.lines tbody tr")
                 
-                let tableRows: Elements = try! doc.select("tr")
-                for tableRow in tableRows {
-                    if tableRow.id().hasSuffix("hide_division_") {
-                        let scoreElement: Element? = try tableRow.select("td.center + td.center").first()
+                var dictIndex = 0
+                var currentCategory = ""
+                
+                for i in 0 ..< tableRows.size() {
+                    let current_tableRow = tableRows.get(i)
+
+                    if try current_tableRow.className().isEmpty && i < tableRows.size() - 1 && tableRows.get(i + 1).id().hasSuffix("hide_division_") {
+                        
+                        if self.scoresDict[dictIndex] != nil {
+                            dictIndex += 1
+                        }
+                        currentCategory = try current_tableRow.select("span.categoryHeading").first()?.text() ?? ""
+                        
+                    } else if current_tableRow.id().hasSuffix("hide_division_") {
+                        let scoreElement: Element? = try current_tableRow.select("td.center + td.center").first()
                         let examScore = try scoreElement?.text()
-                        let score = Score(examName: try (tableRow.select("td.left").first()?.text())!, examScore: examScore!)
-                        self.scoreArr.append(score)
+                        let score = Score(examName: try (current_tableRow.select("td.left").first()?.text())!, examScore: examScore!, categoryName: currentCategory)
+                        
+                        if self.scoresDict[dictIndex] == nil {
+                            self.scoresDict[dictIndex] = [Score]()
+                        }
+                        self.scoresDict[dictIndex]!.append(score)
                     }
                 }
                 
                 DispatchQueue.main.async {
-                    self.tableView.reloadData()
                     self.changeUI(isLoading: false)
+                    
+                    if self.scoresDict.count == 0 {
+                        self.noDataUI()
+                    } else {
+                        self.tableView.reloadData()
+                    }
                 }
                 
                 CoreDataSingleton.shared.context.perform {
-                    self.gradebookObj.score = self.scoreArr as NSObject
+                    self.gradebookObj.score = self.scoresDict as NSObject
                     CoreDataSingleton.shared.saveContext()
                 }
             } catch {
@@ -85,14 +117,24 @@ class GradebookViewController: UIViewController, UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return scoreArr.count
-    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
-        cell.textLabel?.text = scoreArr[indexPath.row].examName
-        cell.detailTextLabel?.text = scoreArr[indexPath.row].examScore
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! GradebookTableViewCell
+        let scoreObj: Score = scoresDict[indexPath.section]![indexPath.row]
+        cell.examName.text = scoreObj.examName
+        cell.examScore.text = scoreObj.examScore
         return cell
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return scoresDict.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return scoresDict[section]!.count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return scoresDict[section]![0].categoryName
     }
 }
