@@ -13,6 +13,7 @@
 		4F49F8121F4F4F870058ECF1 /* GradebookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F49F8111F4F4F870058ECF1 /* GradebookViewController.swift */; };
 		4F5091F01F4E1E20005B89F0 /* Class+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5091EC1F4E1E20005B89F0 /* Class+CoreDataClass.swift */; };
 		4F5091F11F4E1E20005B89F0 /* Class+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5091ED1F4E1E20005B89F0 /* Class+CoreDataProperties.swift */; };
+		4F8923E71F93E4A000CBF03D /* GradebookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8923E61F93E4A000CBF03D /* GradebookTableViewCell.swift */; };
 		4FB3CE001F4CB2060036D33A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB3CDFF1F4CB2060036D33A /* AppDelegate.swift */; };
 		4FB3CE051F4CB2060036D33A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FB3CE031F4CB2060036D33A /* Main.storyboard */; };
 		4FB3CE071F4CB2060036D33A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB3CE061F4CB2060036D33A /* Assets.xcassets */; };
@@ -33,6 +34,7 @@
 		4F49F8111F4F4F870058ECF1 /* GradebookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradebookViewController.swift; sourceTree = "<group>"; };
 		4F5091EC1F4E1E20005B89F0 /* Class+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4F5091ED1F4E1E20005B89F0 /* Class+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Class+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4F8923E61F93E4A000CBF03D /* GradebookTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradebookTableViewCell.swift; sourceTree = "<group>"; };
 		4FB3CDFC1F4CB2060036D33A /* Tsquare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tsquare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FB3CDFF1F4CB2060036D33A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4FB3CE041F4CB2060036D33A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				4FB3CE151F4CB3570036D33A /* ClassViewCell.swift */,
+				4F8923E61F93E4A000CBF03D /* GradebookTableViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F8923E71F93E4A000CBF03D /* GradebookTableViewCell.swift in Sources */,
 				4F2419C81F4DF810007399EF /* Score.swift in Sources */,
 				4FB3CE1E1F4CB37D0036D33A /* PortalViewController.swift in Sources */,
 				4FBEB9931F548EDF001D287E /* Gradebook+CoreDataProperties.swift in Sources */,

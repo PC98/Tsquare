@@ -41,3 +41,26 @@ func networkRequest(request: URLRequest, handler: @escaping(_ data: Data, _ resp
     
     task.resume()
 }
+
+func presentAlert(title: String = "Error", message: String = "Error", presentingVC vc: UIViewController, handler: (() -> Void)? = nil) {
+    let alert = UIAlertController()
+    
+    alert.title = title
+    alert.message = message
+    
+    let okAction = UIAlertAction(title: "OK", style: .default) { alert in
+        if let handler = handler {
+            handler()
+        }
+    }
+    
+    alert.addAction(okAction)
+    
+    if let popoverController = alert.popoverPresentationController {
+        popoverController.sourceView = vc.view
+        popoverController.sourceRect = CGRect(x: vc.view.bounds.midX, y: vc.view.bounds.midY, width: 0, height: 0)
+        popoverController.permittedArrowDirections = []
+    }
+    
+    vc.present(alert, animated: true, completion: nil)
+}

@@ -45,7 +45,10 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     private func populateClassArr() {
         do {
-            classArr = try CoreDataSingleton.shared.context.fetch(Class.fetchRequest())
+            let fetchRequest: NSFetchRequest<Class> = Class.fetchRequest()
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+            
+            classArr = try CoreDataSingleton.shared.context.fetch(fetchRequest)
         } catch {
             fatalError("Can't fetch!")
         }
@@ -64,29 +67,13 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                 let doc: Document = try SwiftSoup.parse(html!)
                 
                 if try doc.select("title").first()?.text() == "GT | GT Login" && UserDefaults.standard.bool(forKey: "dataDownloaded") {
-                    DispatchQueue.main.sync {
-                        let alert = UIAlertController()
-                        
-                        alert.title = "Session Expired"
-                        alert.message = "Attempt to refresh data has failed since your login session has expired. Old data will be presented. You could try logging out and logging back in."
-                        
-                        self.activityIndicator.stopAnimating()
-                        
-                        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
-                            self.activityIndicator.startAnimating()
-                            self.changeUI(isLoading: false)
-                        }
-                        
-                        alert.addAction(okAction)
-                        
-                        if let popoverController = alert.popoverPresentationController {
-                            popoverController.sourceView = self.view
-                            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-                            popoverController.permittedArrowDirections = []
-                        }
-                        
-                        self.present(alert, animated: true, completion: nil)
+                    
+                    presentAlert(title: "Session Expired", message: "Attempt to refresh data has failed since your login session has expired. Old data will be presented. You could try logging out and logging back in.", presentingVC: self) {
+                        self.activityIndicator.startAnimating()
+                        self.changeUI(isLoading: false)
                     }
+                    
+                    self.activityIndicator.stopAnimating()
                 } else {
                     
                     DispatchQueue.main.sync {
@@ -198,21 +185,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                         }
                     }
                 } else {
-                    let alert = UIAlertController()
-                    
-                    alert.title = "Gradebook Missing"
-                    alert.message = "This class doesn't have a Gradebook."
-                    
-                    let okAction = UIAlertAction(title: "OK", style: .default)
-                    alert.addAction(okAction)
-                    
-                    if let popoverController = alert.popoverPresentationController {
-                        popoverController.sourceView = self.view
-                        popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-                        popoverController.permittedArrowDirections = []
-                    }
-                
-                    self.present(alert, animated: true, completion: nil)
+                    presentAlert(title: "Gradebook Missing", message: "This class doesn't have a Gradebook.", presentingVC: self)
                 }
                 
             } catch {
