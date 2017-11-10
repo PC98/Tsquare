@@ -1,5 +1,5 @@
 //
-//  NetworkRequest.swift
+//  GlobalUtilityFunctions.swift
 //  Tsqaure
 //
 //  Created by Prabhav Chawla on 8/21/17.
