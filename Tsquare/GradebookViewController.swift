@@ -97,7 +97,7 @@ class GradebookViewController: UIViewController, UITableViewDataSource {
                     }
                 }
                 
-                DispatchQueue.main.async {
+                CoreDataSingleton.shared.context.perform {
                     self.changeUI(isLoading: false)
                     
                     if self.scoresDict.count == 0 {
@@ -105,9 +105,7 @@ class GradebookViewController: UIViewController, UITableViewDataSource {
                     } else {
                         self.tableView.reloadData()
                     }
-                }
-                
-                CoreDataSingleton.shared.context.perform {
+                    
                     self.gradebookObj.score = self.scoresDict as NSObject
                     CoreDataSingleton.shared.saveContext()
                 }

@@ -68,15 +68,16 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                 
                 if try doc.select("title").first()?.text() == "GT | GT Login" && UserDefaults.standard.bool(forKey: "dataDownloaded") {
                     
+                    DispatchQueue.main.sync {
+                        self.activityIndicator.stopAnimating()
+                    }
                     presentAlert(title: "Session Expired", message: "Attempt to refresh data has failed since your login session has expired. Old data will be presented. You could try logging out and logging back in.", presentingVC: self) {
                         self.activityIndicator.startAnimating()
                         self.changeUI(isLoading: false)
                     }
-                    
-                    self.activityIndicator.stopAnimating()
                 } else {
                     
-                    DispatchQueue.main.sync {
+                    CoreDataSingleton.shared.context.performAndWait {
                         
                         let fr: NSFetchRequest<Class> = Class.fetchRequest()
                         
@@ -108,7 +109,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                     
                     CoreDataSingleton.shared.saveContext()
                     
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.async { // Perhaps change to core data object queue
                         self.populateClassArr()
                         self.collectionView.reloadData()
                         self.changeUI(isLoading: false)
@@ -155,6 +156,9 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
             return
         }
         
+        activityIndicator.isHidden = false
+        self.view.isUserInteractionEnabled = false
+        self.view.alpha = 0.6
         networkRequest(request: URLRequest(url: classObject.siteURL as! URL)) { (data, response) in
             do {
                 
@@ -179,21 +183,23 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                         gradebookController.gradebookObj = gradebookObj
                     
                         CoreDataSingleton.shared.saveContext()
-                        
-                        DispatchQueue.main.async {
-                            self.navigationController!.pushViewController(gradebookController, animated: true)
-                        }
+                        self.navigationController!.pushViewController(gradebookController, animated: true)
                     }
-                } else {
+                } else if try doc.select("title").first()?.text() == "GT | GT Login" && UserDefaults.standard.bool(forKey: "dataDownloaded") {
+                    presentAlert(title: "Session Expired", message: "You can't view this class's Gradebook since your session has expired. Please log-in again.", presentingVC: self)
+                }
+                else {
                     presentAlert(title: "Gradebook Missing", message: "This class doesn't have a Gradebook.", presentingVC: self)
                 }
-                
+                DispatchQueue.main.sync {
+                    self.activityIndicator.isHidden = true
+                    self.view.isUserInteractionEnabled = true
+                    self.view.alpha = 1.0
+                }
             } catch {
                 print("error")
             }
         }
-        
-        collectionView.deselectItem(at: indexPath, animated: true)
     }
     
     @IBAction func logout(_ sender: Any) {
