@@ -13,13 +13,21 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.navigationItem.leftBarButtonItem?.target = webView
+        self.navigationItem.leftBarButtonItem?.action = #selector(webView.goBack)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if !UserDefaults.standard.bool(forKey: "authenticated") {
             self.setUp()
         } else {
-            self.performSegue(withIdentifier: "showNavigationController", sender: self)
+            let portalController = storyboard!.instantiateViewController(withIdentifier: "PortalViewController") as! PortalViewController
+            self.navigationController!.pushViewController(portalController, animated: true)
         }
     }
     
@@ -41,7 +49,8 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
             UserDefaults.standard.set(true, forKey: "authenticated")
             self.webView.isHidden = true
             self.activityIndicator.isHidden = false
-            self.performSegue(withIdentifier: "showNavigationController", sender: self)
+            let portalController = storyboard!.instantiateViewController(withIdentifier: "PortalViewController") as! PortalViewController
+            self.navigationController!.pushViewController(portalController, animated: true)
         }
     }
 }

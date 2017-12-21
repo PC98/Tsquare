@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="j24-Et-z2n">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="alv-OQ-kfX">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Login View Controller-->
+        <!--Login-->
         <scene sceneID="JAN-2W-dPc">
             <objects>
                 <viewController id="j24-Et-z2n" customClass="LoginViewController" customModule="Tsquare" customModuleProvider="target" sceneMemberID="viewController">
@@ -40,16 +40,17 @@
                             <constraint firstItem="8nB-as-6GJ" firstAttribute="top" secondItem="u8O-Lh-pfc" secondAttribute="top" constant="20" id="iJi-E0-km1"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Nc9-5a-BBp"/>
+                    <navigationItem key="navigationItem" title="Login" id="cuG-aP-Mhv">
+                        <barButtonItem key="leftBarButtonItem" style="done" systemItem="reply" id="kq5-s1-NuV"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="hMW-2D-Zbj" id="Qqc-54-pus"/>
                         <outlet property="webView" destination="8nB-as-6GJ" id="rpw-Qi-fCj"/>
-                        <segue destination="alv-OQ-kfX" kind="show" identifier="showNavigationController" id="ldS-iu-ZIh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Svg-AU-J8b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1550" y="134"/>
+            <point key="canvasLocation" x="-711" y="143"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="tH5-lm-4IR">
@@ -60,12 +61,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="7Hk-FT-Sst"/>
+                        <segue destination="j24-Et-z2n" kind="relationship" relationship="rootViewController" id="B8j-ZO-Yis"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Xo-Hq-7g1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-754" y="136"/>
+            <point key="canvasLocation" x="-1612" y="143"/>
         </scene>
         <!--Classes-->
         <scene sceneID="tne-QT-ifu">
@@ -80,7 +81,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="sYk-H3-a8E">
-                                <rect key="frame" x="16" y="76" width="343" height="535"/>
+                                <rect key="frame" x="16" y="32" width="343" height="579"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="LzW-a1-aMb">
                                     <size key="itemSize" width="50" height="50"/>
@@ -97,7 +98,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4gS-1n-zTf">
-                                                    <rect key="frame" x="1" y="1" width="48" height="48"/>
+                                                    <rect key="frame" x="9" y="9" width="32" height="32"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="68W-ym-ULg">
@@ -187,13 +188,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exam Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fVj-rk-6Or">
-                                                    <rect key="frame" x="8" y="12.5" width="81.5" height="18"/>
+                                                    <rect key="frame" x="15" y="12.5" width="81.5" height="18"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exam Score" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eDD-52-RXl">
-                                                    <rect key="frame" x="286" y="12.5" width="81" height="18"/>
+                                                    <rect key="frame" x="279" y="12.5" width="81" height="18"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>

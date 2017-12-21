@@ -220,7 +220,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                 }
             }
             
-            self.dismiss(animated: true)
+            self.navigationController?.popViewController(animated: true)
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .default)
