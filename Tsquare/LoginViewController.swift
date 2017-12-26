@@ -39,7 +39,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
         self.activityIndicator.startAnimating()
         self.activityLabel.isHidden = false
         self.activityLabel.text = "Loading..."
-        self.self.navigationItem.leftBarButtonItem?.isEnabled = false
+        self.navigationItem.leftBarButtonItem?.isEnabled = false
         self.webView.isHidden = true
         self.webView.delegate = self
         self.webView.isOpaque = true
@@ -84,7 +84,7 @@ class LoginViewController: UIViewController, UIWebViewDelegate {
             return
         }
         
-        self.self.navigationItem.leftBarButtonItem?.isEnabled = true
+        self.navigationItem.leftBarButtonItem?.isEnabled = true
         self.webView.isHidden = false
         self.activityIndicator.isHidden = true
         self.activityLabel.isHidden = true
