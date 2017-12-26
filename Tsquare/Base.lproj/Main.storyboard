@@ -22,22 +22,30 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8nB-as-6GJ">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </webView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="hMW-2D-Zbj">
                                 <rect key="frame" x="169" y="315" width="37" height="37"/>
                                 <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R5g-aQ-4vs">
+                                <rect key="frame" x="149.5" y="279" width="75" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="hMW-2D-Zbj" firstAttribute="centerY" secondItem="u8O-Lh-pfc" secondAttribute="centerY" id="BqW-oj-Kv0"/>
                             <constraint firstAttribute="leading" secondItem="8nB-as-6GJ" secondAttribute="leading" id="FXH-dR-dfp"/>
+                            <constraint firstItem="R5g-aQ-4vs" firstAttribute="centerX" secondItem="hMW-2D-Zbj" secondAttribute="centerX" id="Fyb-KI-k5N"/>
+                            <constraint firstItem="8nB-as-6GJ" firstAttribute="top" secondItem="dBE-Hb-Y5u" secondAttribute="bottom" id="M6o-jj-Jzd"/>
                             <constraint firstItem="mJ7-S8-1xZ" firstAttribute="top" secondItem="8nB-as-6GJ" secondAttribute="bottom" id="Pgh-91-N2R"/>
                             <constraint firstAttribute="trailing" secondItem="8nB-as-6GJ" secondAttribute="trailing" id="REL-ph-hwZ"/>
                             <constraint firstItem="hMW-2D-Zbj" firstAttribute="centerX" secondItem="u8O-Lh-pfc" secondAttribute="centerX" id="day-1H-Xqc"/>
-                            <constraint firstItem="8nB-as-6GJ" firstAttribute="top" secondItem="u8O-Lh-pfc" secondAttribute="top" constant="20" id="iJi-E0-km1"/>
+                            <constraint firstItem="hMW-2D-Zbj" firstAttribute="top" secondItem="R5g-aQ-4vs" secondAttribute="bottom" constant="15" id="dgl-du-ZDW"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Login" id="cuG-aP-Mhv">
@@ -45,12 +53,13 @@
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="hMW-2D-Zbj" id="Qqc-54-pus"/>
+                        <outlet property="activityLabel" destination="R5g-aQ-4vs" id="Hfz-kv-REr"/>
                         <outlet property="webView" destination="8nB-as-6GJ" id="rpw-Qi-fCj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Svg-AU-J8b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-711" y="143"/>
+            <point key="canvasLocation" x="-711.20000000000005" y="142.57871064467767"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="tH5-lm-4IR">
@@ -204,7 +213,7 @@
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="fVj-rk-6Or" secondAttribute="trailing" constant="150" id="5pP-my-pLG"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="eDD-52-RXl" secondAttribute="trailing" id="7Rt-j1-QEv"/>
                                                 <constraint firstItem="fVj-rk-6Or" firstAttribute="leading" secondItem="JVF-7z-Zki" secondAttribute="leadingMargin" id="A14-e5-BiY"/>
-                                                <constraint firstItem="eDD-52-RXl" firstAttribute="leading" relation="lessThanOrEqual" secondItem="fVj-rk-6Or" secondAttribute="trailing" constant="225.5" id="Bam-s5-JxK"/>
+                                                <constraint firstItem="eDD-52-RXl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fVj-rk-6Or" secondAttribute="trailing" constant="8" symbolic="YES" id="Bam-s5-JxK"/>
                                                 <constraint firstItem="fVj-rk-6Or" firstAttribute="centerY" secondItem="JVF-7z-Zki" secondAttribute="centerY" id="R3z-cc-PAQ"/>
                                                 <constraint firstItem="eDD-52-RXl" firstAttribute="centerY" secondItem="fVj-rk-6Or" secondAttribute="centerY" id="oNv-J8-gpL"/>
                                             </constraints>
@@ -220,6 +229,12 @@
                                 <rect key="frame" x="169" y="315" width="37" height="37"/>
                                 <color key="color" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tgt-nJ-Bpw">
+                                <rect key="frame" x="168.5" y="282" width="37.5" height="18"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -227,12 +242,15 @@
                             <constraint firstAttribute="trailing" secondItem="B0g-50-CNU" secondAttribute="trailing" id="abX-wu-mzo"/>
                             <constraint firstItem="xQq-2U-TDK" firstAttribute="top" secondItem="B0g-50-CNU" secondAttribute="bottom" id="lf4-Pz-FNr"/>
                             <constraint firstItem="aoz-1a-AgH" firstAttribute="centerY" secondItem="zSd-PG-XIj" secondAttribute="centerY" id="n7V-O8-fPi"/>
+                            <constraint firstItem="Tgt-nJ-Bpw" firstAttribute="centerX" secondItem="aoz-1a-AgH" secondAttribute="centerX" id="njC-cs-dit"/>
                             <constraint firstItem="B0g-50-CNU" firstAttribute="top" secondItem="ax0-qT-08r" secondAttribute="bottom" id="oYE-RD-akj"/>
                             <constraint firstItem="aoz-1a-AgH" firstAttribute="centerX" secondItem="zSd-PG-XIj" secondAttribute="centerX" id="uK1-JX-UEM"/>
+                            <constraint firstItem="aoz-1a-AgH" firstAttribute="top" secondItem="Tgt-nJ-Bpw" secondAttribute="bottom" constant="15" id="vaY-Eq-zbV"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="activityIndicator" destination="aoz-1a-AgH" id="pZg-YA-0AO"/>
+                        <outlet property="activityLabel" destination="Tgt-nJ-Bpw" id="vit-H0-mGa"/>
                         <outlet property="tableView" destination="B0g-50-CNU" id="dls-1B-k8g"/>
                     </connections>
                 </viewController>

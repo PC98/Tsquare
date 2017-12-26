@@ -18,7 +18,7 @@ public class Class: NSManagedObject {
             self.name = name
             self.siteURL = siteURL as NSObject
         }  else {
-            fatalError("Error")
+            fatalError("Error in getting Class entity.")
         }
     }
 }

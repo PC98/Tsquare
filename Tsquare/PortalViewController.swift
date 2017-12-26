@@ -50,7 +50,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
             
             classArr = try CoreDataSingleton.shared.context.fetch(fetchRequest)
         } catch {
-            fatalError("Can't fetch!")
+            fatalError("Error while fetching data from main context: \(error)")
         }
     }
     
@@ -60,20 +60,29 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     private func getTsquare() {
+        let timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: false, block: { (Timer) in
+            presentAlert(title: "Alert", message: "You have slow or no internet connection. We will keep trying to reach T-square.", presentingVC: self)
+        })
+        
         networkRequest(request: URLRequest(url: URL(string: "https://login.gatech.edu/cas/login?service=https%3A%2F%2Ft-square.gatech.edu%2Fsakai-login-tool%2Fcontainer")!)) { (data, response) in
+            timer.invalidate()
             
             do {
                 let html = String(data: data, encoding: .utf8)
                 let doc: Document = try SwiftSoup.parse(html!)
                 
-                if try doc.select("title").first()?.text() == "GT | GT Login" && UserDefaults.standard.bool(forKey: "dataDownloaded") {
+                if try doc.select("title").first()?.text() == "GT | GT Login" {
+                    if UserDefaults.standard.bool(forKey: "dataDownloaded") {
                     
-                    DispatchQueue.main.sync {
-                        self.activityIndicator.stopAnimating()
-                    }
-                    presentAlert(title: "Session Expired", message: "Attempt to refresh data has failed since your login session has expired. Old data will be presented. You could try logging out and logging back in.", presentingVC: self) {
-                        self.activityIndicator.startAnimating()
-                        self.changeUI(isLoading: false)
+                        DispatchQueue.main.sync {
+                            self.activityIndicator.stopAnimating()
+                        }
+                        presentAlert(title: "Session Expired", message: "Attempt to refresh data has failed since your login session has expired. Old data will be presented. You could try logging out and logging back in.", presentingVC: self) {
+                            self.activityIndicator.startAnimating()
+                            self.changeUI(isLoading: false)
+                        }
+                    } else {
+                        fatalError("Error: no old data found when session expired.")
                     }
                 } else {
                     
@@ -119,7 +128,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                     UserDefaults.standard.set(Date(), forKey: "lastRefreshDate")
                 }
             }  catch {
-                print("error")
+                fatalError("Error in getTsquare method: \(error)")
             }
         }
     }
@@ -159,9 +168,15 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
         activityIndicator.isHidden = false
         self.view.isUserInteractionEnabled = false
         self.view.alpha = 0.6
+        
+        let timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: false, block: { (Timer) in
+            presentAlert(title: "Alert", message: "You have slow or no internet connection. We will keep trying to reach T-square.", presentingVC: self)
+        })
+ 
         networkRequest(request: URLRequest(url: classObject.siteURL as! URL)) { (data, response) in
+            timer.invalidate()
+            
             do {
-                
                 let html = String(data: data, encoding: .utf8)
                 let doc: Document = try SwiftSoup.parse(html!)
                 
@@ -197,7 +212,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
                     self.view.alpha = 1.0
                 }
             } catch {
-                print("error")
+                fatalError("Error in collectionView(_: didSelectItemAt:) method: \(error)")
             }
         }
     }
