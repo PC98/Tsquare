@@ -12,14 +12,13 @@ func networkRequest(request: URLRequest, handler: @escaping(_ data: Data, _ resp
     let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
         // if an error occurs, print it and re-enable the UI
         func displayError(_ error: String) {
-            print(error)
-            print("URL at time of error: \(String(describing: request.url))")
+            fatalError("Error. \(error) URL: \(String(describing: request.url))")
         }
         
         // GUARD checks if data doesnt exist and exectes the code in else. If data does exist, it is stored in data... Nice as it avoids nested ifs;.. You can also combine all these gaurd statements. Guard gives robust error checks and debug statements
         /* GUARD: Was there an error? */
         guard (error == nil) else {
-            displayError("There was an error with your request: \(String(describing: error))")
+            displayError("There was an error with your request: \(String(describing: error)).")
             return
         }
         
@@ -34,9 +33,8 @@ func networkRequest(request: URLRequest, handler: @escaping(_ data: Data, _ resp
             displayError("No data was returned by the request!")
             return
         }
-        
+
         handler(data, response!)
-        
     }
     
     task.resume()
@@ -62,5 +60,7 @@ func presentAlert(title: String = "Error", message: String = "Error", presenting
         popoverController.permittedArrowDirections = []
     }
     
-    vc.present(alert, animated: true, completion: nil)
+    if vc.presentedViewController == nil {
+        vc.present(alert, animated: true, completion: nil)
+    }
 }

@@ -13,6 +13,7 @@ class GradebookViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var activityLabel: UILabel!
     
     var gradebookObj: Gradebook!
     var scoresDict = [Int:[Score]]()
@@ -23,6 +24,7 @@ class GradebookViewController: UIViewController, UITableViewDataSource {
         tableView.dataSource = self
         tableView.tableFooterView = UIView.init(frame: .zero)
         tableView.allowsSelection = false
+        tableView.rowHeight = 44;
         
         if let scoresDict = gradebookObj.score as? [Int:[Score]] {
             self.changeUI(isLoading: false)
@@ -34,7 +36,7 @@ class GradebookViewController: UIViewController, UITableViewDataSource {
             return
         }
         
-        self.changeUI(isLoading: true)
+        self.changeUI(isLoading: true, "Fetching Grades...")
         self.getIframeSrc()
     }
     
@@ -44,13 +46,22 @@ class GradebookViewController: UIViewController, UITableViewDataSource {
         }
     }
     
-    private func changeUI(isLoading: Bool) {
+    private func changeUI(isLoading: Bool, _ labelText: String? = nil) {
         activityIndicator.isHidden = !isLoading
+        activityLabel.isHidden = !isLoading
+        if let labelText = labelText {
+            activityLabel.text = labelText
+        }
         tableView.isHidden = isLoading
     }
     
     private func getIframeSrc() {
+        let timer = Timer.scheduledTimer(withTimeInterval: 20, repeats: false, block: { (Timer) in
+            self.activityLabel.text = "Slow or no internet connection..."
+        })
+        
         networkRequest(request: URLRequest(url: gradebookObj.siteURL as! URL)) { (data, response) in
+            timer.invalidate()
             do {
                 let html = String(data: data, encoding: .utf8)
                 let doc: Document = try SwiftSoup.parse(html!)
@@ -59,13 +70,22 @@ class GradebookViewController: UIViewController, UITableViewDataSource {
                 
                 self.getIframeScores(URL(string: iframeSrc)!)
             }  catch {
-                print("error")
+                fatalError("Error in getIframeSrc method: \(error)")
             }
         }
     }
     
     private func getIframeScores(_ url: URL) {
+        let timer = Timer.scheduledTimer(withTimeInterval: 40, repeats: false, block: { (Timer) in
+            self.activityLabel.text = "Slow or no internet connection..."
+        })
+        
         networkRequest(request: URLRequest(url: url)) { (data, response) in
+            timer.invalidate()
+
+            DispatchQueue.main.sync {
+                self.activityLabel.text = "Processing data..."
+            }
             do {
                 let html = String(data: data, encoding: .utf8)
                 let doc: Document = try SwiftSoup.parse(html!)
@@ -97,7 +117,7 @@ class GradebookViewController: UIViewController, UITableViewDataSource {
                     }
                 }
                 
-                DispatchQueue.main.async {
+                CoreDataSingleton.shared.context.perform {
                     self.changeUI(isLoading: false)
                     
                     if self.scoresDict.count == 0 {
@@ -105,14 +125,12 @@ class GradebookViewController: UIViewController, UITableViewDataSource {
                     } else {
                         self.tableView.reloadData()
                     }
-                }
-                
-                CoreDataSingleton.shared.context.perform {
+                    
                     self.gradebookObj.score = self.scoresDict as NSObject
                     CoreDataSingleton.shared.saveContext()
                 }
             } catch {
-                print("error")
+                fatalError("Error in getIframeScores method: \(error)")
             }
         }
     }
