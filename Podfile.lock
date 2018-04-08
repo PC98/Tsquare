@@ -1,11 +1,11 @@
 PODS:
-  - SwiftSoup (1.5.8)
+  - SwiftSoup (1.7.1)
 
 DEPENDENCIES:
   - SwiftSoup
 
 SPEC CHECKSUMS:
-  SwiftSoup: 86a1f5ad07b7e3d14ab1a9324a58c75ae2215e79
+  SwiftSoup: 277f7ef548826e0ca7603a06b30d4a5df3ee0587
 
 PODFILE CHECKSUM: 9aebad47017e68a833d506e709a01abb989b4882
 

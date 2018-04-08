@@ -253,7 +253,7 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     @IBAction func refresh(_ sender: Any) {
-        let str = String(describing: (UserDefaults.standard.object(forKey: "lastRefreshDate") as! Date).customPlaygroundQuickLook)
+        let str = String(describing: (UserDefaults.standard.object(forKey: "lastRefreshDate") as! Date))
         let index = str.index(str.startIndex, offsetBy: 6)
         let endIndex = str.index(str.endIndex, offsetBy:-2)
         
