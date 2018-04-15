@@ -253,14 +253,14 @@ class PortalViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     @IBAction func refresh(_ sender: Any) {
-        let str = String(describing: (UserDefaults.standard.object(forKey: "lastRefreshDate") as! Date))
-        let index = str.index(str.startIndex, offsetBy: 6)
-        let endIndex = str.index(str.endIndex, offsetBy:-2)
+        let dateFormatter = DateFormatter() // to extract my date
+        dateFormatter.dateFormat = "MMM d, h:mm a"
+        let date = dateFormatter.string(from: UserDefaults.standard.object(forKey: "lastRefreshDate") as! Date)
         
         let alert = UIAlertController()
         
         alert.title = "Refresh Confirmation"
-        alert.message = "Are you sure you want to refresh the data? Last refresh date was \(str[Range(index ..< endIndex)])"
+        alert.message = "Are you sure you want to refresh the data? Last refresh date was \(date)"
         
         let refreshAction = UIAlertAction(title: "Refresh", style: .destructive) { (alert: UIAlertAction!) -> Void in
             self.changeUI(isLoading: true)
